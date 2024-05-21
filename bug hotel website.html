@@ -64,6 +64,8 @@
             'Casey': { password: 'AS99casey', rank: 'Rank: Gold++' }
         };
 
+        var currentUser = null;
+
         function validateLogin(event) {
             event.preventDefault();
             var username = document.getElementById('username').value;
@@ -71,6 +73,7 @@
             var user = users[username];
 
             if (user && user.password === password) {
+                currentUser = username;
                 document.querySelector('.form-container').style.display = 'none';
                 document.querySelector('.rank-container').style.display = 'block';
                 document.getElementById('rank-message').textContent = user.rank;
@@ -89,6 +92,7 @@
             document.querySelector('.form-container').style.display = 'block';
             document.querySelector('.rank-container').style.display = 'none';
             document.querySelector('.change-rank-container').style.display = 'none';
+            currentUser = null;
         }
 
         function showChangeRankForm() {
@@ -103,6 +107,9 @@
             if (users[username]) {
                 users[username].rank = newRank;
                 alert('Rank changed successfully!');
+                if (currentUser === username) {
+                    document.getElementById('rank-message').textContent = newRank;
+                }
                 logout();
             } else {
                 alert('User not found.');
